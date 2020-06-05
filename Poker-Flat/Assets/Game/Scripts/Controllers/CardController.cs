@@ -16,8 +16,8 @@ public class CardController : MonoBehaviour
 	{
 		if (model != null)
 		{
-			_frontFaceRenderer.material.SetTexture("_MainTex", model.GetFrontFaceTexture());
-			_backFaceRenderer.material.SetTexture("_MainTex", model.GetBackFaceTexture());
+			_frontFaceRenderer.material.SetTexture("_MainTex", model.FrontFaceTexture);
+			_backFaceRenderer.material.SetTexture("_MainTex", model.BackFaceTexture);
 			_cardColor = model.Color;
 			_cardSuit = model.Suit;
 			_cardValue = model.Value;

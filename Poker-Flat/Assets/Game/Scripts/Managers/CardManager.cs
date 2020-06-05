@@ -20,7 +20,7 @@ public class CardManager
             return instance;
         }
     }
-	public OrderedDictionary AllCards { get; set; }
+	public List<CardModel> AllCards { get; set; }
 
 	private CardManager()
 	{
@@ -35,7 +35,7 @@ public class CardManager
 		{
 			Texture2D[] loadedTextures = Resources.LoadAll<Texture2D>("Sprites/Cards/Front");
 
-			AllCards = new OrderedDictionary();
+			AllCards = new List<CardModel>();
 
 			foreach (var texture in loadedTextures)
 			{
@@ -52,8 +52,9 @@ public class CardManager
 					card.Color = color;
 					card.Suit = suit;
 					card.Value = value;
+					card.FrontFaceTexture = texture;
 
-					AllCards.Add(card, texture);
+					AllCards.Add(card);
 				}
 			}
 
@@ -81,7 +82,7 @@ public class CardManager
 				while (cards.Count < 5)
 				{
 					int index = random.Next(0, AllCards.Count - 1);
-					cards.Add((CardModel)AllCards.Cast<DictionaryEntry>().ElementAt(index).Key);
+					cards.Add(AllCards[index]);
 				}
 			}
 
