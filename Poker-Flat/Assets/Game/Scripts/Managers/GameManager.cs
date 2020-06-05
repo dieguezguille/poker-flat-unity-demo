@@ -17,18 +17,21 @@ public class GameManager : MonoBehaviour
 	{
 		if (CardManager.Instance.LoadCards())
 		{
-			DealtCards = CardManager.Instance.DealCards();
+			DealtCards = CardManager.Instance.GetDealtCards();
 		}
 	}
 
 	private void DealCards()
 	{
-		var prefab = Resources.Load("Prefabs/Cards/Card");
-
-		foreach (var card in DealtCards)
+		if (DealtCards != null && DealtCards.Count > 0)
 		{
-			var gameObject = Instantiate(prefab) as GameObject;
-			gameObject.GetComponent<CardController>().SetValues(card);
+			var prefab = Resources.Load("Prefabs/Cards/Card");
+
+			foreach (var card in DealtCards)
+			{
+				var gameObject = Instantiate(prefab) as GameObject;
+				gameObject.GetComponent<CardController>().SetValues(card);
+			}
 		}
 	}
 }

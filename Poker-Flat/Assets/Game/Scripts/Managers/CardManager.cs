@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
+
 using UnityEngine;
 
 public class CardManager
@@ -34,6 +33,7 @@ public class CardManager
 		try
 		{
 			Texture2D[] loadedTextures = Resources.LoadAll<Texture2D>("Sprites/Cards/Front");
+			Texture2D backfaceTexture = Resources.Load<Texture2D>($"Sprites/Cards/Back/Card-Back-Blue");
 
 			AllCards = new List<CardModel>();
 
@@ -53,6 +53,7 @@ public class CardManager
 					card.Suit = suit;
 					card.Value = value;
 					card.FrontFaceTexture = texture;
+					card.BackFaceTexture = backfaceTexture;
 
 					AllCards.Add(card);
 				}
@@ -67,7 +68,7 @@ public class CardManager
 		}
 	}
 
-	public List<CardModel> DealCards()
+	public List<CardModel> GetDealtCards()
 	{
 		HashSet<CardModel> cards = null;
 
