@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
 	private void Init()
 	{
-		CardManager.Instance.LoadCards();
-		CardManager.Instance.DealCards();
+		var loaded = CardManager.Instance.LoadCards();
+		var cards = CardManager.Instance.DealCards();
 	}
 }

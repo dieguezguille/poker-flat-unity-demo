@@ -27,8 +27,10 @@ public class CardManager
 
 	}
 
-    public void LoadCards()
+    public bool LoadCards()
 	{
+		bool cardsLoaded = false;
+
 		try
 		{
 			Texture2D[] loadedTextures = Resources.LoadAll<Texture2D>("Sprites/Cards/Front");
@@ -50,14 +52,17 @@ public class CardManager
 					card.Color = color;
 					card.Suit = suit;
 					card.Value = value;
-				}
 
-				AllCards.Add(card, texture);
+					AllCards.Add(card, texture);
+				}
 			}
+
+			return cardsLoaded = AllCards.Count == 52;
 		}
 		catch (Exception ex)
 		{
 			Debug.LogError(ex);
+			return cardsLoaded;
 		}
 	}
 
@@ -67,14 +72,17 @@ public class CardManager
 
 		try
 		{
-			cards = new HashSet<CardModel>();
-
-			var random = new System.Random();
-
-			while (cards.Count < 5)
+			if (AllCards != null && AllCards.Count > 0)
 			{
-				int index = random.Next(0, AllCards.Count - 1);
-				cards.Add((CardModel)AllCards.Cast<DictionaryEntry>().ElementAt(index).Key);
+				cards = new HashSet<CardModel>();
+
+				var random = new System.Random();
+
+				while (cards.Count < 5)
+				{
+					int index = random.Next(0, AllCards.Count - 1);
+					cards.Add((CardModel)AllCards.Cast<DictionaryEntry>().ElementAt(index).Key);
+				}
 			}
 
 			return cards.ToList();
