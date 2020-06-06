@@ -4,29 +4,38 @@ using System.Linq;
 
 using UnityEngine;
 
-public class CardManager
+public class Deck
 {
-	private static CardManager instance;
-	public static CardManager Instance
+	private static Deck instance;
+	public static Deck Instance
 	{
         get
         {
             if (instance == null)
             {
-                instance = new CardManager();
+                instance = new Deck();
             }
 
             return instance;
         }
     }
-	public List<CardModel> AllCards { get; set; }
 
-	private CardManager()
+	public List<Card> Cards { get; set; }
+	public List<Card> DealtCards { get; set; }
+
+	private Deck()
 	{
 
 	}
 
-    public bool LoadCards()
+	public void Init()
+	{
+		Cards = new List<Card>();
+		DealtCards = new List<Card>();
+		LoadDeck();
+	}
+
+    private bool LoadDeck()
 	{
 		bool cardsLoaded = false;
 
@@ -35,13 +44,13 @@ public class CardManager
 			Texture2D[] loadedTextures = Resources.LoadAll<Texture2D>("Sprites/Cards/Front");
 			Texture2D backfaceTexture = Resources.Load<Texture2D>($"Sprites/Cards/Back/Card-Back-Blue");
 
-			AllCards = new List<CardModel>();
+			Cards = new List<Card>();
 
 			foreach (var texture in loadedTextures)
 			{
 				string[] attributes = texture.name.Split('-');
 
-				var card = new CardModel();
+				var card = new Card();
 
 				bool parsedColor = Enum.TryParse(attributes[0], out CardColor color);
 				bool parsedSuit = Enum.TryParse(attributes[1], out CardSuit suit);
@@ -55,11 +64,11 @@ public class CardManager
 					card.FrontFaceTexture = texture;
 					card.BackFaceTexture = backfaceTexture;
 
-					AllCards.Add(card);
+					Cards.Add(card);
 				}
 			}
 
-			return cardsLoaded = AllCards.Count == 52;
+			return cardsLoaded = Cards.Count == loadedTextures.Length;
 		}
 		catch (Exception ex)
 		{
@@ -68,31 +77,46 @@ public class CardManager
 		}
 	}
 
-	public List<CardModel> GetDealtCards()
+	public List<Card> GetCards(int number)
 	{
-		HashSet<CardModel> cards = null;
+		var cards = new List<Card>();
 
 		try
 		{
-			if (AllCards != null && AllCards.Count > 0)
+			if (Cards != null && number <= Cards.Count)
 			{
-				cards = new HashSet<CardModel>();
-
-				var random = new System.Random();
-
-				while (cards.Count < 5)
+				while (DealtCards.Count < number)
 				{
-					int index = random.Next(0, AllCards.Count - 1);
-					cards.Add(AllCards[index]);
+					cards.Add(GetCard());
 				}
 			}
 
-			return cards.ToList();
+			return cards;
 		}
 		catch(Exception ex)
 		{
 			Debug.LogError(ex);
-			return cards.ToList();
+			return cards;
+		}
+	}
+
+	public Card GetCard()
+	{
+		var random = new System.Random();
+		int index = random.Next(0, Cards.Count - 1);
+
+		DealtCards.Add(Cards[index]);
+		Cards.RemoveAt(index);
+
+		return DealtCards.Last();
+	}
+
+	public void RetrieveCard(Card card)
+	{
+		if (DealtCards.Contains(card))
+		{
+			Cards.Add(card);
+			DealtCards.Remove(card);
 		}
 	}
 }

@@ -12,15 +12,15 @@ public class CardController : MonoBehaviour
 
 	private int _cardValue;
 
-	public void SetValues(CardModel model)
+	public void SetValues(Card card)
 	{
-		if (model != null)
+		if (card != null)
 		{
-			_frontFaceRenderer.material.SetTexture("_MainTex", model.FrontFaceTexture);
-			_backFaceRenderer.material.SetTexture("_MainTex", model.BackFaceTexture);
-			_cardColor = model.Color;
-			_cardSuit = model.Suit;
-			_cardValue = model.Value;
+			_frontFaceRenderer.material.SetTexture("_MainTex", card.FrontFaceTexture);
+			_backFaceRenderer.material.SetTexture("_MainTex", card.BackFaceTexture);
+			_cardColor = card.Color;
+			_cardSuit = card.Suit;
+			_cardValue = card.Value;
 		}
 	}
 }

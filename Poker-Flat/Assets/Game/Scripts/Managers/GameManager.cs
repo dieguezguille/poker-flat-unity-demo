@@ -1,35 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	List<CardModel> DealtCards;
+	GameObject cardPrefab;
+	List<Card> Cards;
 
-	private void Start()
+	private void Awake()
 	{
 		Init();
-		DealCards();
 	}
 
 	private void Init()
 	{
-		if (CardManager.Instance.LoadCards())
-		{
-			DealtCards = CardManager.Instance.GetDealtCards();
-		}
+		cardPrefab = Resources.Load("Prefabs/Cards/Card") as GameObject;
+		Cards = new List<Card>();
+		Deck.Instance.Init();
+		
+		//Cards = Deck.Instance.GetCards(5);
+		//Deck.Instance.RetrieveCard(Cards[1]);
+		//DealCards();
 	}
 
-	private void DealCards()
+	private void InstantiateCards()
 	{
-		if (DealtCards != null && DealtCards.Count > 0)
+		if (Cards != null && Cards.Count > 0)
 		{
-			var prefab = Resources.Load("Prefabs/Cards/Card");
-
-			foreach (var card in DealtCards)
+			foreach (var card in Cards)
 			{
-				var gameObject = Instantiate(prefab) as GameObject;
+				var gameObject = Instantiate(cardPrefab);
 				gameObject.GetComponent<CardController>().SetValues(card);
 			}
 		}
