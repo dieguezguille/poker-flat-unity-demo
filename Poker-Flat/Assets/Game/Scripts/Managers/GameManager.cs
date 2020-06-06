@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	public GameObject _tableTop;
 	GameObject cardPrefab;
 	List<Card> Cards;
 
@@ -18,9 +19,9 @@ public class GameManager : MonoBehaviour
 		Cards = new List<Card>();
 		Deck.Instance.Init();
 		
-		//Cards = Deck.Instance.GetCards(5);
-		//Deck.Instance.RetrieveCard(Cards[1]);
-		//DealCards();
+		Cards = Deck.Instance.GetCards(5);
+		Deck.Instance.RetrieveCard(Cards[1]);
+		InstantiateCards();
 	}
 
 	private void InstantiateCards()
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
 			{
 				var gameObject = Instantiate(cardPrefab);
 				gameObject.GetComponent<CardController>().SetValues(card);
+				gameObject.transform.localPosition = new Vector3(_tableTop.transform.position.x, _tableTop.transform.position.y + 4f, _tableTop.transform.position.z - 1.5f);
 			}
 		}
 	}
