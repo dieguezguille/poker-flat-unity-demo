@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1346762204005353444}
   - component: {fileID: 1346762204005353443}
   - component: {fileID: 5419927906968933960}
+  - component: {fileID: 1210621400581093493}
   m_Layer: 0
   m_Name: BackFacePlane
   m_TagString: Untagged
@@ -92,3 +93,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dae7d24efb47e7143aba8ab3f33d5d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &1210621400581093493
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346762204005353441}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 2.220446e-16, z: 9.999999}
+  m_Center: {x: 0, y: 0, z: 0}
