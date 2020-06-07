@@ -1,5 +1,6 @@
 ﻿using cakeslice;
 
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,14 +15,18 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 	private CardModel _card;
 	private Outline _outline;
-	private Rigidbody _rigidbody;
-	private bool isLerping;
 
+	private bool isLerping;
 
 	private void Awake()
 	{
 		_outline = GetComponent<Outline>();
-		_rigidbody = GetComponent<Rigidbody>();
+		_outline.enabled = false;
+	}
+
+	private void Start()
+	{
+		//_outline.enabled = false;
 	}
 
 	public void SetValues(CardModel card)
@@ -53,36 +58,43 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 	public IEnumerator MoveTo(Vector3 end, float moveDuration)
 	{
-		_rigidbody.isKinematic = true;
-
-		float t = 0.0f;
-
-		while (t < moveDuration)
+		if (!isLerping)
 		{
-			t += Time.deltaTime;
-			transform.position = Vector3.Lerp(transform.position, end, t / moveDuration);
+			isLerping = true;
+			float t = 0.0f;
 
-			if (Vector3.Distance(transform.position, end) < 0.001f)
+			while (t < moveDuration)
 			{
-				_rigidbody.isKinematic = false;
-				yield break;
-			}
+				t += Time.deltaTime;
+				transform.position = Vector3.Lerp(transform.position, end, t / moveDuration);
 
-			yield return null;
+				if (Vector3.Distance(transform.position, end) < 0.001f)
+				{
+					isLerping = false;
+					yield break;
+				}
+
+				yield return null;
+			}
 		}
 	}
-
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
 		_outline.enabled = true;
-		var pos = gameObject.transform.position;
-		StartCoroutine(MoveTo(new Vector3(pos.x, pos.y + .1f, pos.z), .2f));
+		//var pos = transform.position;
+
+		//if (!isLerping)
+		//	StartCoroutine(MoveTo(new Vector3(pos.x, pos.y + .1f, pos.z), .2f));
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
 		_outline.enabled = _card.IsSelected;
+		//var pos = transform.position;
+
+		//if (!isLerping)
+		//	StartCoroutine(MoveTo(new Vector3(pos.x, pos.y - .1f, pos.z), .2f));
 	}
 
 	public void OnPointerClick(PointerEventData eventData)
