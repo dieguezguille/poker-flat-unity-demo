@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
+
 using Quaternion = UnityEngine.Quaternion;
 
-public class CardController : MonoBehaviour
+public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 	[SerializeField]
 	private MeshRenderer _frontFaceRenderer;
@@ -50,5 +52,17 @@ public class CardController : MonoBehaviour
 			elapsedTime += Time.deltaTime;
 			yield return null;
 		}
+	}
+
+	public void OnPointerEnter(PointerEventData eventData)
+	{
+		// highlight card
+		Debug.Log("entering");
+	}
+
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		// disable card highlight
+		Debug.Log("leaving");
 	}
 }
