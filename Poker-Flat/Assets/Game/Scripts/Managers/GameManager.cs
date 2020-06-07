@@ -19,19 +19,14 @@ public class GameManager : MonoBehaviour
 
 	private void Init()
 	{
-		Cards = new List<CardModel>();
 		DeckManager.Instance.Init();
 		Cards = DeckManager.Instance.GetRandomCards(5);
 		InstantiateCards();
-		FlipCards();
 	}
 
-	private void FlipCards()
+	public void FlipCard(CardModel card)
 	{
-		//foreach (var card in Cards)
-		//{
-		//	StartCoroutine(card)
-		//}
+		StartCoroutine(card.Controller.RotateZ(180));
 	}
 
 	private void InstantiateCards()
@@ -40,16 +35,17 @@ public class GameManager : MonoBehaviour
 		{
 			for (int i = 0; i < _cardHolders.transform.childCount; i++)
 			{
-				var gameObject = Instantiate(Globals.CardPrefab);
-				gameObject.transform.SetParent(_world.transform);
+				var card = Cards[i];
 
-				var card = gameObject.GetComponent<CardController>();
-				card.SetValues(Cards[i]);
+				card.GameObject = Instantiate(Globals.CardPrefab);
+				card.GameObject.transform.SetParent(_world.transform);
+
+				card.Controller = card.GameObject.GetComponent<CardController>();
+				card.Controller.SetValues(Cards[i]);
 
 				var pos = _cardDeck.transform.position;
-				gameObject.transform.position = new Vector3(pos.x, pos.y + 2f, pos.z);
-
-				StartCoroutine(card.MoveTo(_cardHolders.transform.GetChild(i).position));
+				card.GameObject.transform.position = new Vector3(pos.x, pos.y + 2f, pos.z);
+				StartCoroutine(card.Controller.MoveTo(_cardHolders.transform.GetChild(i).position));
 			}
 		}
 	}

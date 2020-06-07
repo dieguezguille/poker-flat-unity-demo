@@ -52,20 +52,19 @@ public class DeckManager
 			{
 				string[] attributes = texture.name.Split('-');
 
-				var card = new CardModel();
-
 				bool parsedColor = Enum.TryParse(attributes[0], out CardColor color);
 				bool parsedSuit = Enum.TryParse(attributes[1], out CardSuit suit);
 				bool parsedValue = int.TryParse(attributes[2], out int value);
 
 				if (parsedColor && parsedSuit && parsedValue)
 				{
+					var card = new CardModel();
+
 					card.Color = color;
 					card.Suit = suit;
 					card.Value = value;
-					card.FrontFaceTexture = texture;
-					card.BackFaceTexture = Globals.DeckTexture;
-					card.GameObject = Globals.CardPrefab;
+					card.FrontTexture = texture;
+					card.DeckTexture = Globals.DeckTexture;
 
 					Cards.Add(card);
 				}

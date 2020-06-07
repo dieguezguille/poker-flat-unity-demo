@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 
@@ -13,18 +12,16 @@ public class CardController : MonoBehaviour
 	private CardColor _cardColor;
 	private CardSuit _cardSuit;
 	private int _cardValue;
-	private GameObject _gameObject;
 
 	public void SetValues(CardModel card)
 	{
 		if (card != null)
 		{
-			_frontFaceRenderer.material.SetTexture("_MainTex", card.FrontFaceTexture);
-			_backFaceRenderer.material.SetTexture("_MainTex", card.BackFaceTexture);
+			_frontFaceRenderer.material.SetTexture("_MainTex", card.FrontTexture);
+			_backFaceRenderer.material.SetTexture("_MainTex", card.DeckTexture);
 			_cardColor = card.Color;
 			_cardSuit = card.Suit;
 			_cardValue = card.Value;
-			_gameObject = card.GameObject;
 		}
 	}
 
