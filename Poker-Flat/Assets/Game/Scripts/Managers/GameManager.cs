@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -40,6 +37,16 @@ public class GameManager : MonoBehaviour
 				card.Controller.SetValues(deck.DealtCards[i]);
 				StartCoroutine(card.Controller.MoveTo(_cardLocators.transform.GetChild(i).position, 2f));
 			}
+		}
+	}
+
+	public void ChangeCards()
+	{
+		List<CardModel> selectedCards = DeckManager.Instance.DealtCards.FindAll(card => card.IsSelected);
+
+		foreach (var card in selectedCards)
+		{
+			DeckManager.Instance.ChangeCard(card);
 		}
 	}
 }

@@ -9,5 +9,22 @@ public class CardModel
 	public CardColor Color { get; set; }
 	public CardSuit Suit { get; set; }
 	public int Value { get; set; }
-	public bool IsSelected { get; set; }
+
+	private bool isSelected;
+	public bool IsSelected
+	{
+		get
+		{
+			return isSelected;
+		}
+		set
+		{
+			isSelected = value;
+
+			if (Controller != null)
+			{
+				Controller._outline.enabled = isSelected;
+			}
+		}
+	}
 }

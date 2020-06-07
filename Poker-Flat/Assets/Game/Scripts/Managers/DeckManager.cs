@@ -24,6 +24,7 @@ public class DeckManager
 
 	public List<CardModel> Cards { get; set; }
 	public List<CardModel> DealtCards { get; set; }
+	private GameObject Deck { get; set; }
 	private System.Random _random { get; set; }
 
 	private DeckManager()
@@ -36,6 +37,7 @@ public class DeckManager
 		_random = new System.Random();
 		Cards = new List<CardModel>();
 		DealtCards = new List<CardModel>();
+		Deck = GameObject.Find("Deck");
 
 		Globals.CardPrefab = Resources.Load(ConfigValues.CardPrefab) as GameObject;
 		Globals.CardTextures = Resources.LoadAll<Texture2D>(ConfigValues.FrontFaceTextures);
@@ -110,12 +112,15 @@ public class DeckManager
 		return DealtCards.Last();
 	}
 
-	public void ReturnCard(CardModel card)
+	public void ChangeCard(CardModel card)
 	{
 		if (DealtCards.Contains(card))
 		{
+			card.IsSelected = false;
 			Cards.Add(card);
 			DealtCards.Remove(card);
 		}
+
+		card.Controller.StartCoroutine(card.Controller.MoveTo(new Vector3(Deck.transform.position.x, Deck.transform.position.y + .25f, Deck.transform.position.z), 2f));
 	}
 }

@@ -5,13 +5,14 @@ using UnityEngine.EventSystems;
 
 public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+	public Outline _outline;
+
 	[SerializeField]
 	private MeshRenderer _frontFaceRenderer;
 	[SerializeField]
 	private MeshRenderer _backFaceRenderer;
 
 	private CardModel _card;
-	private Outline _outline;
 
 	private float _maxY;
 	private float _minY;
@@ -48,7 +49,6 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	public void OnPointerClick(PointerEventData eventData)
 	{
 		_card.IsSelected = !_card.IsSelected;
-		_outline.enabled = _card.IsSelected;
 	}
 
 	private void OnHiglightEvent(object sender, bool highlighted)
