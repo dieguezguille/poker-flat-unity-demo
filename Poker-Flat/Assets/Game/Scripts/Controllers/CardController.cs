@@ -1,6 +1,4 @@
 ﻿using cakeslice;
-
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,17 +14,9 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	private CardModel _card;
 	private Outline _outline;
 
-	private bool isLerping;
-
 	private void Awake()
 	{
 		_outline = GetComponent<Outline>();
-		_outline.enabled = false;
-	}
-
-	private void Start()
-	{
-		//_outline.enabled = false;
 	}
 
 	public void SetValues(CardModel card)
@@ -41,60 +31,41 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 	public IEnumerator RotateZ(float degrees)
 	{
-		if (!isLerping)
+		var transform = GetComponent<Transform>();
+		for (float i = 0; i <= degrees; i++)
 		{
-			isLerping = true;
-
-			var transform = GetComponent<Transform>();
-			for (float i = 0; i <= degrees; i++)
-			{
-				transform.rotation = Quaternion.Euler(0f, 0f, i);
-				yield return new WaitForSeconds(0f);
-			}
+			transform.rotation = Quaternion.Euler(0f, 0f, i);
+			yield return new WaitForSeconds(0f);
 		}
-
-		isLerping = false;
 	}
 
 	public IEnumerator MoveTo(Vector3 end, float moveDuration)
 	{
-		if (!isLerping)
+		float t = 0.0f;
+
+		while (t < moveDuration)
 		{
-			isLerping = true;
-			float t = 0.0f;
+			t += Time.deltaTime;
+			transform.position = Vector3.Lerp(transform.position, end, t / moveDuration);
 
-			while (t < moveDuration)
+			if (Vector3.Distance(transform.position, end) < 0.001f)
 			{
-				t += Time.deltaTime;
-				transform.position = Vector3.Lerp(transform.position, end, t / moveDuration);
-
-				if (Vector3.Distance(transform.position, end) < 0.001f)
-				{
-					isLerping = false;
-					yield break;
-				}
-
-				yield return null;
+				transform.position = end;
+				yield break;
 			}
+
+			yield return null;
 		}
 	}
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
 		_outline.enabled = true;
-		//var pos = transform.position;
-
-		//if (!isLerping)
-		//	StartCoroutine(MoveTo(new Vector3(pos.x, pos.y + .1f, pos.z), .2f));
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
 		_outline.enabled = _card.IsSelected;
-		//var pos = transform.position;
-
-		//if (!isLerping)
-		//	StartCoroutine(MoveTo(new Vector3(pos.x, pos.y - .1f, pos.z), .2f));
 	}
 
 	public void OnPointerClick(PointerEventData eventData)

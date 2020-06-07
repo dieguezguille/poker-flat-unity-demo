@@ -10,8 +10,6 @@ public class GameManager : MonoBehaviour
 	public GameObject _cardLocators;
 	public GameObject _world;
 
-	List<CardModel> Cards;
-
 	private void Awake()
 	{
 		Init();
@@ -20,7 +18,7 @@ public class GameManager : MonoBehaviour
 	private void Init()
 	{
 		DeckManager.Instance.Init();
-		Cards = DeckManager.Instance.GetRandomCards(5);
+		DeckManager.Instance.GetRandomCards(5);
 		InstantiateCards();
 	}
 
@@ -31,18 +29,20 @@ public class GameManager : MonoBehaviour
 
 	private void InstantiateCards()
 	{
-		if (Cards != null && Cards.Count > 0)
+		var deck = DeckManager.Instance;
+
+		if (deck.DealtCards != null && deck.DealtCards.Count > 0)
 		{
 			for (int i = 0; i < _cardLocators.transform.childCount; i++)
 			{
-				var card = Cards[i];
+				var card = deck.DealtCards[i];
 
 				card.GameObject = Instantiate(Globals.CardPrefab);
 				card.GameObject.transform.SetParent(_world.transform);
 				var pos = _deck.transform.position;
 				card.GameObject.transform.position = new Vector3(pos.x, pos.y + .3f, pos.z);
 				card.Controller = card.GameObject.GetComponent<CardController>();
-				card.Controller.SetValues(Cards[i]);
+				card.Controller.SetValues(deck.DealtCards[i]);
 				StartCoroutine(card.Controller.MoveTo(_cardLocators.transform.GetChild(i).position, 2f));
 			}
 		}
