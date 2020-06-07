@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	public GameObject _tableTop;
+	public GameObject _cardDeck;
 	GameObject cardPrefab;
 	List<CardModel> Cards;
 
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 			{
 				var gameObject = Instantiate(cardPrefab);
 				gameObject.GetComponent<CardController>().SetValues(card);
-				gameObject.transform.localPosition = new Vector3(_tableTop.transform.position.x, _tableTop.transform.position.y + 4f, _tableTop.transform.position.z - 1.5f);
+				gameObject.transform.localPosition = new Vector3(_cardDeck.transform.localPosition.x, _cardDeck.transform.localPosition.y + .1f, _cardDeck.transform.localPosition.z);
 			}
 		}
 	}
