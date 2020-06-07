@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 	public GameObject _cardDeck;
+	public GameObject _cardHolders;
+
 	GameObject cardPrefab;
 	List<CardModel> Cards;
 
@@ -28,11 +30,12 @@ public class GameManager : MonoBehaviour
 	{
 		if (Cards != null && Cards.Count > 0)
 		{
-			foreach (var card in Cards)
+			
+			for (int i = 0; i < _cardHolders.transform.childCount; i++)
 			{
 				var gameObject = Instantiate(cardPrefab);
-				gameObject.GetComponent<CardController>().SetValues(card);
-				gameObject.transform.localPosition = new Vector3(_cardDeck.transform.localPosition.x, _cardDeck.transform.localPosition.y + .1f, _cardDeck.transform.localPosition.z);
+				gameObject.GetComponent<CardController>().SetValues(Cards[i]);
+				gameObject.transform.position = _cardHolders.transform.GetChild(i).position;
 			}
 		}
 	}
