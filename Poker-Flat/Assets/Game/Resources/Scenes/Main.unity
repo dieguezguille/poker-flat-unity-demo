@@ -166,6 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardDeck: {fileID: 408548733}
   _cardHolders: {fileID: 1895605813}
+  _world: {fileID: 1191562176}
 --- !u!1 &31913576
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,7 +565,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1895605813}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.973, z: -1.39}
+  m_LocalPosition: {x: 0, y: 2.1, z: -1.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 31913577}
@@ -612,6 +613,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1191562177}
     m_Modifications:
+    - target: {fileID: 495268804386620444, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 495268804410815290, guid: fdd78d963eaf72948ad201fc21f037a5,
         type: 3}
       propertyPath: m_Name
@@ -620,7 +626,7 @@ PrefabInstance:
     - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
         type: 3}
@@ -670,6 +676,11 @@ PrefabInstance:
     - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 495268805093731062, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1005,7 +1016,7 @@ Rigidbody:
   m_Mass: 15
   m_Drag: 0
   m_AngularDrag: 0
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126

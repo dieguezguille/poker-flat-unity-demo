@@ -4,10 +4,10 @@ public class BackFaceController : MonoBehaviour
 {
 	private void Awake()
 	{
-		GlobalResources.OnBackFaceTextureChanged += OnBackFaceTextureChanged;
+		Globals.OnDeckTextureChanged += OnDeckTextureChanged;
 	}
 
-	private void OnBackFaceTextureChanged(object sender, Texture2D texture)
+	private void OnDeckTextureChanged(object sender, Texture2D texture)
 	{
 		GetComponent<MeshRenderer>().material.SetTexture("_MainTex", texture);
 	}

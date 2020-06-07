@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.Game.Scripts.Support;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,6 +24,7 @@ public class DeckManager
 
 	public List<CardModel> Cards { get; set; }
 	public List<CardModel> DealtCards { get; set; }
+	private System.Random _random { get; set; }
 
 	private DeckManager()
 	{
@@ -30,24 +33,22 @@ public class DeckManager
 
 	public void Init()
 	{
+		_random = new System.Random();
 		Cards = new List<CardModel>();
 		DealtCards = new List<CardModel>();
+
+		Globals.CardPrefab = Resources.Load(ConfigValues.CardPrefab) as GameObject;
+		Globals.CardTextures = Resources.LoadAll<Texture2D>(ConfigValues.FrontFaceTextures);
+		Globals.DeckTexture = Resources.Load<Texture2D>(string.Format(ConfigValues.BackFaceTexture, ConfigValues.DeckColor.ToString())); ;
+
 		LoadDeck();
 	}
 
-    private bool LoadDeck()
+    private void LoadDeck()
 	{
-		bool cardsLoaded = false;
-
 		try
 		{
-			Texture2D[] loadedTextures = Resources.LoadAll<Texture2D>("Sprites/Cards/Front");
-			Texture2D backFaceTexture = Resources.Load<Texture2D>($"Sprites/Cards/Back/Card-Back-Blue");
-			GlobalResources.BackFaceTexture = backFaceTexture;
-
-			Cards = new List<CardModel>();
-
-			foreach (var texture in loadedTextures)
+			foreach (var texture in Globals.CardTextures)
 			{
 				string[] attributes = texture.name.Split('-');
 
@@ -63,22 +64,20 @@ public class DeckManager
 					card.Suit = suit;
 					card.Value = value;
 					card.FrontFaceTexture = texture;
-					card.BackFaceTexture = backFaceTexture;
+					card.BackFaceTexture = Globals.DeckTexture;
+					card.GameObject = Globals.CardPrefab;
 
 					Cards.Add(card);
 				}
 			}
-
-			return cardsLoaded = Cards.Count == loadedTextures.Length;
 		}
 		catch (Exception ex)
 		{
 			Debug.LogError(ex);
-			return cardsLoaded;
 		}
 	}
 
-	public List<CardModel> GetCards(int number)
+	public List<CardModel> GetRandomCards(int number)
 	{
 		var cards = new List<CardModel>();
 
@@ -88,7 +87,7 @@ public class DeckManager
 			{
 				while (DealtCards.Count < number)
 				{
-					cards.Add(GetCard());
+					cards.Add(GetRandomCard());
 				}
 			}
 
@@ -101,10 +100,9 @@ public class DeckManager
 		}
 	}
 
-	public CardModel GetCard()
+	public CardModel GetRandomCard()
 	{
-		var random = new System.Random();
-		int index = random.Next(0, Cards.Count - 1);
+		int index = _random.Next(Cards.Count);
 
 		DealtCards.Add(Cards[index]);
 		Cards.RemoveAt(index);
@@ -112,7 +110,7 @@ public class DeckManager
 		return DealtCards.Last();
 	}
 
-	public void RetrieveCard(CardModel card)
+	public void ReturnCard(CardModel card)
 	{
 		if (DealtCards.Contains(card))
 		{
