@@ -760,7 +760,7 @@ GameObject:
   - component: {fileID: 2744811640906422594}
   - component: {fileID: 5599946471658934049}
   - component: {fileID: 5910758603002605460}
-  - component: {fileID: 5910758603002605461}
+  - component: {fileID: 5910758603002605462}
   m_Layer: 0
   m_Name: TableTop
   m_TagString: Untagged
@@ -784,7 +784,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!64 &5910758603002605461
+--- !u!64 &5910758603002605462
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
