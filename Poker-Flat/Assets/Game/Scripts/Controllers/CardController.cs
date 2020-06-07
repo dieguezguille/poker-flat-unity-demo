@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Quaternion = UnityEngine.Quaternion;
 
 public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
@@ -85,13 +84,23 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		}
 	}
 
-	//public IEnumerator RotateZ(float degrees)
-	//{
-	//	var transform = GetComponent<Transform>();
-	//	for (float i = 0; i <= degrees; i++)
-	//	{
-	//		transform.rotation = Quaternion.Euler(0f, 0f, i);
-	//		yield return new WaitForSeconds(0f);
-	//	}
-	//}
+	public IEnumerator RotateTo(Vector3 end, float rotateDuration)
+	{
+		float t = 0.0f;
+
+		while (t < rotateDuration)
+		{
+			t += Time.deltaTime;
+			var rot = transform.rotation;
+			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(end), t / rotateDuration);
+
+			if (Vector3.Distance(transform.rotation.eulerAngles, Quaternion.Euler(end).eulerAngles) < 0.01f)
+			{
+				transform.rotation = Quaternion.Euler(end);
+				yield break;
+			}
+
+			yield return null;
+		}
+	}
 }
