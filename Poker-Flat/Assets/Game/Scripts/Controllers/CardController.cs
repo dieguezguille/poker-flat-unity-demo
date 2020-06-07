@@ -1,68 +1,93 @@
-﻿using System.Collections;
+﻿using cakeslice;
+
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
 using Quaternion = UnityEngine.Quaternion;
 
-public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
 	[SerializeField]
 	private MeshRenderer _frontFaceRenderer;
 	[SerializeField]
 	private MeshRenderer _backFaceRenderer;
 
-	private CardColor _cardColor;
-	private CardSuit _cardSuit;
-	private int _cardValue;
+	private CardModel _card;
+	private Outline _outline;
+	private Rigidbody _rigidbody;
+	private bool isLerping;
+
+
+	private void Awake()
+	{
+		_outline = GetComponent<Outline>();
+		_rigidbody = GetComponent<Rigidbody>();
+	}
 
 	public void SetValues(CardModel card)
 	{
 		if (card != null)
 		{
-			_frontFaceRenderer.material.SetTexture("_MainTex", card.FrontTexture);
-			_backFaceRenderer.material.SetTexture("_MainTex", card.DeckTexture);
-			_cardColor = card.Color;
-			_cardSuit = card.Suit;
-			_cardValue = card.Value;
+			_card = card;
+			_frontFaceRenderer.material.SetTexture("_MainTex", _card.FrontTexture);
+			_backFaceRenderer.material.SetTexture("_MainTex", _card.DeckTexture);
 		}
 	}
 
 	public IEnumerator RotateZ(float degrees)
 	{
-		var transform = GetComponent<Transform>();
-		for (float i = 0; i <= degrees; i++)
+		if (!isLerping)
 		{
-			transform.rotation = Quaternion.Euler(0f, 0f, i);
-			yield return new WaitForSeconds(0f);
+			isLerping = true;
+
+			var transform = GetComponent<Transform>();
+			for (float i = 0; i <= degrees; i++)
+			{
+				transform.rotation = Quaternion.Euler(0f, 0f, i);
+				yield return new WaitForSeconds(0f);
+			}
 		}
+
+		isLerping = false;
 	}
 
-	public IEnumerator MoveTo(Vector3 position)
+	public IEnumerator MoveTo(Vector3 end, float moveDuration)
 	{
-		float elapsedTime = 0;
-		float waitTime = 2f;
+		_rigidbody.isKinematic = true;
 
-		var rigidBody = GetComponent<Rigidbody>();
-		var interpolater = 0.0f;
+		float t = 0.0f;
 
-		while (elapsedTime < waitTime)
+		while (t < moveDuration)
 		{
-			rigidBody.MovePosition(Vector3.Lerp(rigidBody.position, position, interpolater)); 
-			interpolater += 0.02f * Time.deltaTime;
-			elapsedTime += Time.deltaTime;
+			t += Time.deltaTime;
+			transform.position = Vector3.Lerp(transform.position, end, t / moveDuration);
+
+			if (Vector3.Distance(transform.position, end) < 0.001f)
+			{
+				_rigidbody.isKinematic = false;
+				yield break;
+			}
+
 			yield return null;
 		}
 	}
 
+
 	public void OnPointerEnter(PointerEventData eventData)
 	{
-		// highlight card
-		Debug.Log("entering");
+		_outline.enabled = true;
+		var pos = gameObject.transform.position;
+		StartCoroutine(MoveTo(new Vector3(pos.x, pos.y + .1f, pos.z), .2f));
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
-		// disable card highlight
-		Debug.Log("leaving");
+		_outline.enabled = _card.IsSelected;
+	}
+
+	public void OnPointerClick(PointerEventData eventData)
+	{
+		_card.IsSelected = !_card.IsSelected;
+		_outline.enabled = _card.IsSelected;
 	}
 }

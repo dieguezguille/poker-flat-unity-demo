@@ -29,10 +29,10 @@ using System.Collections.Generic;
 namespace cakeslice
 {
     [ExecuteInEditMode]
-    [RequireComponent(typeof(Renderer))]
+    //[RequireComponent(typeof(Renderer))]
     public class Outline : MonoBehaviour
     {
-        public Renderer Renderer { get; private set; }
+        public Renderer[] Renderers { get; private set; }
 
         public int color;
         public bool eraseRenderer;
@@ -44,7 +44,7 @@ namespace cakeslice
 
         private void Awake()
         {
-            Renderer = GetComponent<Renderer>();
+            Renderers = GetComponentsInChildren<Renderer>();
         }
 
         void OnEnable()

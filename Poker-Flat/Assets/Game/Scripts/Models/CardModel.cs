@@ -9,4 +9,5 @@ public class CardModel
 	public CardColor Color { get; set; }
 	public CardSuit Suit { get; set; }
 	public int Value { get; set; }
+	public bool IsSelected { get; set; }
 }

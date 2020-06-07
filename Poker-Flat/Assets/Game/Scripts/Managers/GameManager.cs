@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	public GameObject _cardDeck;
-	public GameObject _cardHolders;
+	public GameObject _deck;
+	public GameObject _cardLocators;
 	public GameObject _world;
 
 	List<CardModel> Cards;
@@ -33,19 +33,17 @@ public class GameManager : MonoBehaviour
 	{
 		if (Cards != null && Cards.Count > 0)
 		{
-			for (int i = 0; i < _cardHolders.transform.childCount; i++)
+			for (int i = 0; i < _cardLocators.transform.childCount; i++)
 			{
 				var card = Cards[i];
 
 				card.GameObject = Instantiate(Globals.CardPrefab);
 				card.GameObject.transform.SetParent(_world.transform);
-
+				var pos = _deck.transform.position;
+				card.GameObject.transform.position = new Vector3(pos.x, pos.y + .3f, pos.z);
 				card.Controller = card.GameObject.GetComponent<CardController>();
 				card.Controller.SetValues(Cards[i]);
-
-				var pos = _cardDeck.transform.position;
-				card.GameObject.transform.position = new Vector3(pos.x, pos.y + 2f, pos.z);
-				StartCoroutine(card.Controller.MoveTo(_cardHolders.transform.GetChild(i).position));
+				StartCoroutine(card.Controller.MoveTo(_cardLocators.transform.GetChild(i).position, 2f));
 			}
 		}
 	}

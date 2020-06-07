@@ -65,6 +65,7 @@ public class DeckManager
 					card.Value = value;
 					card.FrontTexture = texture;
 					card.DeckTexture = Globals.DeckTexture;
+					card.IsSelected = false;
 
 					Cards.Add(card);
 				}
