@@ -369,9 +369,85 @@ Transform:
   m_Children:
   - {fileID: 3358208699364949724}
   - {fileID: 5006512735882544617}
+  - {fileID: 1302391637}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1302391637 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
+    type: 3}
+  m_PrefabInstance: {fileID: 495268805675440238}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &495268805675440238
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1191562177}
+    m_Modifications:
+    - target: {fileID: 495268804410815290, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_Name
+      value: CardDeck
+      objectReference: {fileID: 0}
+    - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 495268804410815291, guid: fdd78d963eaf72948ad201fc21f037a5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fdd78d963eaf72948ad201fc21f037a5, type: 3}
 --- !u!33 &1481955163779557631
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -686,7 +762,7 @@ GameObject:
   - component: {fileID: 5910758603002605460}
   - component: {fileID: 5910758603002605461}
   m_Layer: 0
-  m_Name: Table Top
+  m_Name: TableTop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

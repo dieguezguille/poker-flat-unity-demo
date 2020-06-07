@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
 	public GameObject _tableTop;
 	GameObject cardPrefab;
-	List<Card> Cards;
+	List<CardModel> Cards;
 
 	private void Awake()
 	{
@@ -16,11 +16,11 @@ public class GameManager : MonoBehaviour
 	private void Init()
 	{
 		cardPrefab = Resources.Load("Prefabs/Cards/Card") as GameObject;
-		Cards = new List<Card>();
-		Deck.Instance.Init();
+		Cards = new List<CardModel>();
+		DeckManager.Instance.Init();
 		
-		Cards = Deck.Instance.GetCards(5);
-		Deck.Instance.RetrieveCard(Cards[1]);
+		Cards = DeckManager.Instance.GetCards(5);
+		DeckManager.Instance.RetrieveCard(Cards[1]);
 		InstantiateCards();
 	}
 

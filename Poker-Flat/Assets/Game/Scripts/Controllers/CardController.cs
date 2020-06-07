@@ -12,7 +12,7 @@ public class CardController : MonoBehaviour
 
 	private int _cardValue;
 
-	public void SetValues(Card card)
+	public void SetValues(CardModel card)
 	{
 		if (card != null)
 		{

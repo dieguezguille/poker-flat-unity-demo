@@ -4,34 +4,34 @@ using System.Linq;
 
 using UnityEngine;
 
-public class Deck
+public class DeckManager
 {
-	private static Deck instance;
-	public static Deck Instance
+	private static DeckManager instance;
+	public static DeckManager Instance
 	{
         get
         {
             if (instance == null)
             {
-                instance = new Deck();
+                instance = new DeckManager();
             }
 
             return instance;
         }
     }
 
-	public List<Card> Cards { get; set; }
-	public List<Card> DealtCards { get; set; }
+	public List<CardModel> Cards { get; set; }
+	public List<CardModel> DealtCards { get; set; }
 
-	private Deck()
+	private DeckManager()
 	{
 
 	}
 
 	public void Init()
 	{
-		Cards = new List<Card>();
-		DealtCards = new List<Card>();
+		Cards = new List<CardModel>();
+		DealtCards = new List<CardModel>();
 		LoadDeck();
 	}
 
@@ -42,15 +42,16 @@ public class Deck
 		try
 		{
 			Texture2D[] loadedTextures = Resources.LoadAll<Texture2D>("Sprites/Cards/Front");
-			Texture2D backfaceTexture = Resources.Load<Texture2D>($"Sprites/Cards/Back/Card-Back-Blue");
+			Texture2D backFaceTexture = Resources.Load<Texture2D>($"Sprites/Cards/Back/Card-Back-Blue");
+			GlobalResources.BackFaceTexture = backFaceTexture;
 
-			Cards = new List<Card>();
+			Cards = new List<CardModel>();
 
 			foreach (var texture in loadedTextures)
 			{
 				string[] attributes = texture.name.Split('-');
 
-				var card = new Card();
+				var card = new CardModel();
 
 				bool parsedColor = Enum.TryParse(attributes[0], out CardColor color);
 				bool parsedSuit = Enum.TryParse(attributes[1], out CardSuit suit);
@@ -62,7 +63,7 @@ public class Deck
 					card.Suit = suit;
 					card.Value = value;
 					card.FrontFaceTexture = texture;
-					card.BackFaceTexture = backfaceTexture;
+					card.BackFaceTexture = backFaceTexture;
 
 					Cards.Add(card);
 				}
@@ -77,9 +78,9 @@ public class Deck
 		}
 	}
 
-	public List<Card> GetCards(int number)
+	public List<CardModel> GetCards(int number)
 	{
-		var cards = new List<Card>();
+		var cards = new List<CardModel>();
 
 		try
 		{
@@ -100,7 +101,7 @@ public class Deck
 		}
 	}
 
-	public Card GetCard()
+	public CardModel GetCard()
 	{
 		var random = new System.Random();
 		int index = random.Next(0, Cards.Count - 1);
@@ -111,7 +112,7 @@ public class Deck
 		return DealtCards.Last();
 	}
 
-	public void RetrieveCard(Card card)
+	public void RetrieveCard(CardModel card)
 	{
 		if (DealtCards.Contains(card))
 		{
