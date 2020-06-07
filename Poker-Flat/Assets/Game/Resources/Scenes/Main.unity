@@ -799,7 +799,7 @@ GameObject:
   - component: {fileID: 2744811640906422594}
   - component: {fileID: 5599946471658934049}
   - component: {fileID: 5910758603002605460}
-  - component: {fileID: 5910758603002605462}
+  - component: {fileID: 5910758603002605461}
   m_Layer: 0
   m_Name: TableTop
   m_TagString: Untagged
@@ -823,8 +823,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!64 &5910758603002605462
-MeshCollider:
+--- !u!65 &5910758603002605461
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -833,10 +833,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6317805809608689028, guid: 4cd8b1373dc07e1479b349af459fb0e3, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 4.684203, y: 0.2794879, z: 8.312541}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6075403656289436125
 GameObject:
   m_ObjectHideFlags: 0
