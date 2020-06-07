@@ -25,6 +25,8 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
+using System;
 
 namespace cakeslice
 {
@@ -32,6 +34,7 @@ namespace cakeslice
     //[RequireComponent(typeof(Renderer))]
     public class Outline : MonoBehaviour
     {
+        public event EventHandler<bool> OnHighlightEvent;
         public Renderer[] Renderers { get; private set; }
 
         public int color;
@@ -57,6 +60,8 @@ namespace cakeslice
             {
                 effect.AddOutline(this);
             }
+
+            OnHighlightEvent?.Invoke(this, true);
         }
 
         void OnDisable()
@@ -69,6 +74,8 @@ namespace cakeslice
             {
                 effect.RemoveOutline(this);
             }
+
+            OnHighlightEvent?.Invoke(this, false);
         }
     }
 }

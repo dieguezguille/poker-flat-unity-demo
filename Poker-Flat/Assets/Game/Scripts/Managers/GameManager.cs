@@ -22,11 +22,6 @@ public class GameManager : MonoBehaviour
 		InstantiateCards();
 	}
 
-	public void FlipCard(CardModel card)
-	{
-		StartCoroutine(card.Controller.RotateZ(180));
-	}
-
 	private void InstantiateCards()
 	{
 		var deck = DeckManager.Instance;

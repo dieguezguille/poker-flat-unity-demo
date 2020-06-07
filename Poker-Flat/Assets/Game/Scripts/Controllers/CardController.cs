@@ -14,9 +14,16 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	private CardModel _card;
 	private Outline _outline;
 
+	private float _maxY;
+	private float _minY;
+
 	private void Awake()
 	{
 		_outline = GetComponent<Outline>();
+		_outline.OnHighlightEvent += OnHiglightEvent;
+
+		_minY = GameObject.Find("CardLocators").transform.position.y;
+		_maxY = _minY + .1f;
 	}
 
 	public void SetValues(CardModel card)
@@ -29,13 +36,33 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		}
 	}
 
-	public IEnumerator RotateZ(float degrees)
+	public void OnPointerEnter(PointerEventData eventData)
 	{
-		var transform = GetComponent<Transform>();
-		for (float i = 0; i <= degrees; i++)
+		_outline.enabled = true;
+	}
+
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		_outline.enabled = _card.IsSelected;
+	}
+
+	public void OnPointerClick(PointerEventData eventData)
+	{
+		_card.IsSelected = !_card.IsSelected;
+		_outline.enabled = _card.IsSelected;
+	}
+
+	private void OnHiglightEvent(object sender, bool highlighted)
+	{
+		var pos = transform.position;
+
+		if (highlighted)
 		{
-			transform.rotation = Quaternion.Euler(0f, 0f, i);
-			yield return new WaitForSeconds(0f);
+			StartCoroutine(MoveTo(new Vector3(pos.x, _maxY, pos.z), .1f));
+		}
+		else
+		{
+			StartCoroutine(MoveTo(new Vector3(pos.x, _minY, pos.z), .1f));
 		}
 	}
 
@@ -58,19 +85,13 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		}
 	}
 
-	public void OnPointerEnter(PointerEventData eventData)
-	{
-		_outline.enabled = true;
-	}
-
-	public void OnPointerExit(PointerEventData eventData)
-	{
-		_outline.enabled = _card.IsSelected;
-	}
-
-	public void OnPointerClick(PointerEventData eventData)
-	{
-		_card.IsSelected = !_card.IsSelected;
-		_outline.enabled = _card.IsSelected;
-	}
+	//public IEnumerator RotateZ(float degrees)
+	//{
+	//	var transform = GetComponent<Transform>();
+	//	for (float i = 0; i <= degrees; i++)
+	//	{
+	//		transform.rotation = Quaternion.Euler(0f, 0f, i);
+	//		yield return new WaitForSeconds(0f);
+	//	}
+	//}
 }
