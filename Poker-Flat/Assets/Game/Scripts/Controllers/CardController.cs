@@ -1,5 +1,9 @@
 ﻿using cakeslice;
+
+using System;
 using System.Collections;
+using System.Linq;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -31,6 +35,8 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		if (card != null)
 		{
 			_card = card;
+			_card.Controller = this;
+			_card.GameObject = gameObject;
 			_frontFaceRenderer.material.SetTexture("_MainTex", _card.FrontTexture);
 			_backFaceRenderer.material.SetTexture("_MainTex", _card.DeckTexture);
 		}
@@ -48,7 +54,12 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		_card.IsSelected = !_card.IsSelected;
+		var selectedCards = DeckManager.Instance.DealtCards.FindAll(card => card.IsSelected);
+
+		if (selectedCards.Count < 3 || selectedCards.Contains(_card))
+		{
+			_card.IsSelected = !_card.IsSelected;
+		}
 	}
 
 	private void OnHiglightEvent(object sender, bool highlighted)
@@ -65,7 +76,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		}
 	}
 
-	public IEnumerator MoveTo(Vector3 end, float moveDuration)
+	public IEnumerator MoveTo(Vector3 end, float moveDuration, Action function = null)
 	{
 		float t = 0.0f;
 
@@ -77,6 +88,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 			if (Vector3.Distance(transform.position, end) < 0.001f)
 			{
 				transform.position = end;
+				function?.Invoke();
 				yield break;
 			}
 
@@ -84,7 +96,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		}
 	}
 
-	public IEnumerator RotateTo(Vector3 end, float rotateDuration)
+	public IEnumerator RotateTo(Vector3 end, float rotateDuration, Action function = null)
 	{
 		float t = 0.0f;
 
@@ -97,6 +109,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 			if (Vector3.Distance(transform.rotation.eulerAngles, Quaternion.Euler(end).eulerAngles) < 0.01f)
 			{
 				transform.rotation = Quaternion.Euler(end);
+				function?.Invoke();
 				yield break;
 			}
 

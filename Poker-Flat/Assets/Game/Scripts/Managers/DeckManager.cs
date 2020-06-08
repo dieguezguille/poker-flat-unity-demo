@@ -34,9 +34,11 @@ public class DeckManager
 
 	public void Init()
 	{
-		_random = new System.Random();
 		Cards = new List<CardModel>();
 		DealtCards = new List<CardModel>();
+
+		_random = new System.Random();
+
 		Deck = GameObject.Find("Deck");
 
 		Globals.CardPrefab = Resources.Load(ConfigValues.CardPrefab) as GameObject;
@@ -114,6 +116,8 @@ public class DeckManager
 
 	public void ChangeCard(CardModel card)
 	{
+		var initialCardPos = card.GameObject.transform.position;
+
 		if (DealtCards.Contains(card))
 		{
 			card.IsSelected = false;
@@ -121,6 +125,14 @@ public class DeckManager
 			DealtCards.Remove(card);
 		}
 
-		card.Controller.StartCoroutine(card.Controller.MoveTo(new Vector3(Deck.transform.position.x, Deck.transform.position.y + .25f, Deck.transform.position.z), 2f));
+		var deckPosition = new Vector3(Deck.transform.position.x, Deck.transform.position.y + .25f, Deck.transform.position.z);
+		var newCard = GetRandomCard();
+
+		card.Controller.StartCoroutine(card.Controller.MoveTo(deckPosition, 2f, () =>
+		{
+			card.Controller.SetValues(newCard);
+			card.Controller.StartCoroutine(card.Controller.MoveTo(initialCardPos, 2f));
+		}));
+		
 	}
 }
