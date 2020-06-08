@@ -49,8 +49,8 @@ Rigidbody:
   m_AngularDrag: 0.5
   m_UseGravity: 0
   m_IsKinematic: 1
-  m_Interpolate: 2
-  m_Constraints: 0
+  m_Interpolate: 0
+  m_Constraints: 48
   m_CollisionDetection: 0
 --- !u!65 &-1268464074454643533
 BoxCollider:
@@ -63,8 +63,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5013932, y: 0.0019874275, z: 0.64572096}
-  m_Center: {x: 0.00036519766, y: 0.00051017106, z: -0.0037867427}
+  m_Size: {x: 0.55257684, y: 0.0019874275, z: 0.7009267}
+  m_Center: {x: -0.00035598874, y: 0.00051017106, z: -0.0024968088}
 --- !u!114 &-768989848097989983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,6 +77,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22d89b4cd40984e4aa4ccdb7b1b85341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _outline: {fileID: 0}
+  _collider: {fileID: 0}
   _frontFaceRenderer: {fileID: 3346009785904984837}
   _backFaceRenderer: {fileID: 2200616308761862405}
 --- !u!114 &-6273395975759134587

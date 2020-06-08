@@ -21,7 +21,6 @@ public class DeckManager
             return instance;
         }
     }
-
 	public List<CardModel> Cards { get; set; }
 	public List<CardModel> DealtCards { get; set; }
 	private GameObject Deck { get; set; }
@@ -70,6 +69,7 @@ public class DeckManager
 					card.FrontTexture = texture;
 					card.DeckTexture = Globals.DeckTexture;
 					card.IsSelected = false;
+					card.IsTweening = false;
 
 					Cards.Add(card);
 				}
@@ -126,13 +126,25 @@ public class DeckManager
 		}
 
 		var deckPosition = new Vector3(Deck.transform.position.x, Deck.transform.position.y + .25f, Deck.transform.position.z);
-		var newCard = GetRandomCard();
+		card.IsTweening = true;
 
-		card.Controller.StartCoroutine(card.Controller.MoveTo(deckPosition, 2f, () =>
+		card.Controller.StartCoroutine(card.Controller.RotateTo(new Vector3(0, 0, 180), 1f, () =>
 		{
-			card.Controller.SetValues(newCard);
-			card.Controller.StartCoroutine(card.Controller.MoveTo(initialCardPos, 2f));
+			card.Controller.SetValues(GetRandomCard());
+			card.Controller.StartCoroutine(card.Controller.MoveTo(deckPosition, 2f, () =>
+			{
+				card.Controller.StartCoroutine(card.Controller.MoveTo(initialCardPos, 2f, () =>
+				{
+					card.Controller.StartCoroutine(card.Controller.RotateTo(new Vector3(0, 0, 0), 1f, () =>
+					{
+						var finalCardPos = new Vector3(initialCardPos.x, initialCardPos.y - .1f, initialCardPos.z);
+						card.Controller.StartCoroutine(card.Controller.MoveTo(finalCardPos, .1f, () =>
+						{
+							card.IsTweening = false;
+						}));
+					}));
+				}));
+			}));
 		}));
-		
 	}
 }

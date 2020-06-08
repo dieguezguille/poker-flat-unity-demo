@@ -2,19 +2,22 @@
 
 using System;
 using System.Collections;
-using System.Linq;
 
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+	[HideInInspector]
 	public Outline _outline;
+	[HideInInspector]
+	public BoxCollider _collider;
 
 	[SerializeField]
 	private MeshRenderer _frontFaceRenderer;
 	[SerializeField]
 	private MeshRenderer _backFaceRenderer;
+
 
 	private CardModel _card;
 
@@ -28,6 +31,8 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 		_minY = GameObject.Find("CardLocators").transform.position.y;
 		_maxY = _minY + .1f;
+
+		_collider = GetComponent<BoxCollider>();
 	}
 
 	public void SetValues(CardModel card)
@@ -44,35 +49,43 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
-		_outline.enabled = true;
+		if (!_card.IsTweening)
+			_outline.enabled = true;
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
-		_outline.enabled = _card.IsSelected;
+		if (!_card.IsTweening)
+			_outline.enabled = _card.IsSelected;
 	}
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		var selectedCards = DeckManager.Instance.DealtCards.FindAll(card => card.IsSelected);
-
-		if (selectedCards.Count < 3 || selectedCards.Contains(_card))
+		if (!_card.IsTweening)
 		{
-			_card.IsSelected = !_card.IsSelected;
+			var selectedCards = DeckManager.Instance.DealtCards.FindAll(card => card.IsSelected);
+
+			if (selectedCards.Count < 3 || selectedCards.Contains(_card))
+			{
+				_card.IsSelected = !_card.IsSelected;
+			}
 		}
 	}
 
 	private void OnHiglightEvent(object sender, bool highlighted)
 	{
-		var pos = transform.position;
+		if (!_card.IsTweening)
+		{
+			var pos = transform.position;
 
-		if (highlighted)
-		{
-			StartCoroutine(MoveTo(new Vector3(pos.x, _maxY, pos.z), .1f));
-		}
-		else
-		{
-			StartCoroutine(MoveTo(new Vector3(pos.x, _minY, pos.z), .1f));
+			if (highlighted)
+			{
+				StartCoroutine(MoveTo(new Vector3(pos.x, _maxY, pos.z), .1f));
+			}
+			else
+			{
+				StartCoroutine(MoveTo(new Vector3(pos.x, _minY, pos.z), .1f));
+			}
 		}
 	}
 
@@ -98,6 +111,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 	public IEnumerator RotateTo(Vector3 end, float rotateDuration, Action function = null)
 	{
+
 		float t = 0.0f;
 
 		while (t < rotateDuration)

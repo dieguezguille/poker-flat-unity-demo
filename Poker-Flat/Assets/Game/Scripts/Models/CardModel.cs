@@ -27,4 +27,6 @@ public class CardModel
 			}
 		}
 	}
+
+	public bool IsTweening { get; set; }
 }

@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
 		if (deck.DealtCards != null && deck.DealtCards.Count > 0)
 		{
-			for (int i = 0; i < _cardLocators.transform.childCount; i++)
+			for (int i = 0; i < deck.DealtCards.Count; i++)
 			{
 				var card = deck.DealtCards[i];
 
