@@ -5,49 +5,47 @@ using System.Collections.Generic;
 using System.Linq;
 
 using UnityEngine;
+using DG.Tweening;
 
 public class DeckManager
 {
 	private static DeckManager instance;
 	public static DeckManager Instance
 	{
-        get
-        {
-            if (instance == null)
-            {
-                instance = new DeckManager();
-            }
+		get
+		{
+			if (instance == null)
+			{
+				instance = new DeckManager();
+			}
 
-            return instance;
-        }
-    }
+			return instance;
+		}
+	}
 	public List<CardModel> Cards { get; set; }
 	public List<CardModel> DealtCards { get; set; }
-	private GameObject Deck { get; set; }
-	private System.Random _random { get; set; }
+	public GameObject Deck { get; set; }
+	private System.Random Random { get; set; }
 
 	private DeckManager()
 	{
-
 	}
 
 	public void Init()
 	{
 		Cards = new List<CardModel>();
 		DealtCards = new List<CardModel>();
-
-		_random = new System.Random();
-
+		Random = new System.Random();
 		Deck = GameObject.Find("Deck");
 
 		Globals.CardPrefab = Resources.Load(ConfigValues.CardPrefab) as GameObject;
 		Globals.CardTextures = Resources.LoadAll<Texture2D>(ConfigValues.FrontFaceTextures);
 		Globals.DeckTexture = Resources.Load<Texture2D>(string.Format(ConfigValues.BackFaceTexture, ConfigValues.DeckColor.ToString())); ;
 
-		LoadDeck();
+		Load();
 	}
 
-    private void LoadDeck()
+	private void Load()
 	{
 		try
 		{
@@ -69,7 +67,6 @@ public class DeckManager
 					card.FrontTexture = texture;
 					card.DeckTexture = Globals.DeckTexture;
 					card.IsSelected = false;
-					card.IsTweening = false;
 
 					Cards.Add(card);
 				}
@@ -81,17 +78,17 @@ public class DeckManager
 		}
 	}
 
-	public List<CardModel> GetRandomCards(int number)
+	public List<CardModel> GetCards(int quantity)
 	{
 		var cards = new List<CardModel>();
 
 		try
 		{
-			if (Cards != null && number <= Cards.Count)
+			if (Cards != null && quantity <= Cards.Count)
 			{
-				while (DealtCards.Count < number)
+				while (DealtCards.Count < quantity)
 				{
-					cards.Add(GetRandomCard());
+					cards.Add(GetCard());
 				}
 			}
 
@@ -104,47 +101,19 @@ public class DeckManager
 		}
 	}
 
-	public CardModel GetRandomCard()
+	public CardModel GetCard()
 	{
-		int index = _random.Next(Cards.Count);
-
+		int index = Random.Next(Cards.Count);
 		DealtCards.Add(Cards[index]);
 		Cards.RemoveAt(index);
-
 		return DealtCards.Last();
 	}
 
-	public void ChangeCard(CardModel card)
+	public CardModel ReplaceCard(CardModel cardToReplace)
 	{
-		var initialCardPos = card.GameObject.transform.position;
-
-		if (DealtCards.Contains(card))
-		{
-			card.IsSelected = false;
-			Cards.Add(card);
-			DealtCards.Remove(card);
-		}
-
-		var deckPosition = new Vector3(Deck.transform.position.x, Deck.transform.position.y + .25f, Deck.transform.position.z);
-		card.IsTweening = true;
-
-		card.Controller.StartCoroutine(card.Controller.RotateTo(new Vector3(0, 0, 180), 1f, () =>
-		{
-			card.Controller.SetValues(GetRandomCard());
-			card.Controller.StartCoroutine(card.Controller.MoveTo(deckPosition, 2f, () =>
-			{
-				card.Controller.StartCoroutine(card.Controller.MoveTo(initialCardPos, 2f, () =>
-				{
-					card.Controller.StartCoroutine(card.Controller.RotateTo(new Vector3(0, 0, 0), 1f, () =>
-					{
-						var finalCardPos = new Vector3(initialCardPos.x, initialCardPos.y - .1f, initialCardPos.z);
-						card.Controller.StartCoroutine(card.Controller.MoveTo(finalCardPos, .1f, () =>
-						{
-							card.IsTweening = false;
-						}));
-					}));
-				}));
-			}));
-		}));
+		cardToReplace.IsSelected = false;
+		Cards.Add(cardToReplace);
+		DealtCards.Remove(cardToReplace);
+		return GetCard();
 	}
 }
