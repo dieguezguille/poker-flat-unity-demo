@@ -1,5 +1,8 @@
 ﻿using cakeslice;
 using DG.Tweening;
+
+using System.Linq;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -95,7 +98,9 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 	private void ToggleSelection()
 	{
-		_card.IsSelected = !_card.IsSelected;
+		var selectedCards = DeckManager.Instance.DealtCards.Where(x => x.IsSelected).ToList();
+
+		_card.IsSelected = !_card.IsSelected && selectedCards.Count < 3;
 		_outline.enabled = _card.IsSelected;
 
 		if (_card.IsSelected)
