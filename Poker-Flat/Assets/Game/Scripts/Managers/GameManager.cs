@@ -1,13 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Game.Scripts.Enums;
+using Assets.Game.Scripts.Managers;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+	[HideInInspector]
+	public List<GameObject> Cards;
+
 	public GameObject _deck;
 	public GameObject _cardLocators;
 	public GameObject _world;
 
-	public List<GameObject> Cards;
+	public Button _changeCardsButton;
+	public Button _tryAgainButton;
+
+	public Text _scoreText;
 
 	private void Awake()
 	{
@@ -18,6 +27,9 @@ public class GameManager : MonoBehaviour
 	{
 		DeckManager.Instance.Init();
 		DeckManager.Instance.GetCards();
+
+		_tryAgainButton.gameObject.SetActive(false);
+		_scoreText.gameObject.SetActive(false);
 
 		InstantiateCards();
 	}
@@ -43,6 +55,8 @@ public class GameManager : MonoBehaviour
 				Cards.Add(cardGo);
 			}
 		}
+
+		CheckScore();
 	}
 
 	public void ChangeCards()
@@ -53,5 +67,31 @@ public class GameManager : MonoBehaviour
 		{
 			card.GetComponent<CardController>().Replace();
 		}
+
+		_changeCardsButton.interactable = false;
+		_tryAgainButton.gameObject.SetActive(true);
+
+		CheckScore();
+	}
+
+	public void CheckScore()
+	{
+		HandType hand = ScoreManager.Instance.CheckScore();
+		_scoreText.gameObject.SetActive(true);
+		_scoreText.text = $"{hand}: {(int)hand} points!";
+	}
+
+	public void Restart()
+	{
+		foreach (var card in Cards)
+		{
+			card.GetComponent<CardController>().Model.IsSelected = true;
+		}
+
+		ChangeCards();
+
+		_tryAgainButton.gameObject.SetActive(false);
+		_changeCardsButton.interactable = true;
+		_scoreText.gameObject.SetActive(false);
 	}
 }
