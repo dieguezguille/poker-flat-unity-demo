@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 	public GameObject _cardLocators;
 	public GameObject _world;
 
-	public List<CardController> Cards { get; set; }
+	public List<GameObject> Cards;
 
 	private void Awake()
 	{
@@ -17,12 +17,12 @@ public class GameManager : MonoBehaviour
 	private void Init()
 	{
 		DeckManager.Instance.Init();
-		DeckManager.Instance.GetCards(5);
-		Cards = new List<CardController>();
+		DeckManager.Instance.GetCards();
+
 		InstantiateCards();
 	}
 
-	private void InstantiateCards()
+	public void InstantiateCards()
 	{
 		var deck = DeckManager.Instance;
 
@@ -30,26 +30,28 @@ public class GameManager : MonoBehaviour
 		{
 			for (int i = 0; i < deck.DealtCards.Count; i++)
 			{
-				var card = deck.DealtCards[i];
+				var cardModel = deck.DealtCards[i];
+
 				var cardGo = Instantiate(Globals.CardPrefab);
 				cardGo.transform.SetParent(_world.transform);
 				cardGo.transform.position = DeckManager.Instance.Deck.position;
 				CardController controller = cardGo.GetComponent<CardController>();
-				Cards.Add(controller);
-				controller.SetValues(card);
+				controller.SetValues(cardModel);
 				controller._initialPos = _cardLocators.transform.GetChild(i).position;
 				controller.MoveTo(controller._initialPos, 0.7f);
+
+				Cards.Add(cardGo);
 			}
 		}
 	}
 
 	public void ChangeCards()
 	{
-		List<CardController> selectedCards = Cards.FindAll(cardController => cardController._card.IsSelected);
+		List<GameObject> selectedCards = Cards.FindAll(card => card.GetComponent<CardController>().Model.IsSelected);
 
-		foreach (var cardController in selectedCards)
+		foreach (var card in selectedCards)
 		{
-			cardController.Replace();
+			card.GetComponent<CardController>().Replace();
 		}
 	}
 }

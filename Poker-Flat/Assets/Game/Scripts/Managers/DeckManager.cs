@@ -76,7 +76,7 @@ public class DeckManager
 		}
 	}
 
-	public List<CardModel> GetCards(int quantity)
+	public List<CardModel> GetCards(int quantity = 5)
 	{
 		var cards = new List<CardModel>();
 

@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
 	[HideInInspector]
-	public CardModel _card;
+	public CardModel Model;
 
 	[HideInInspector]
 	public Outline _outline;
@@ -43,13 +43,13 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		ToggleSelection();
 	}
 
-	public void SetValues(CardModel card)
+	public void SetValues(CardModel model)
 	{
-		if (card != null)
+		if (model != null)
 		{
-			_card = card;
-			_frontFaceRenderer.material.SetTexture("_MainTex", _card.FrontTexture);
-			_backFaceRenderer.material.SetTexture("_MainTex", _card.DeckTexture);
+			Model = model;
+			_frontFaceRenderer.material.SetTexture("_MainTex", Model.FrontTexture);
+			_backFaceRenderer.material.SetTexture("_MainTex", Model.DeckTexture);
 		}
 	}
 
@@ -60,7 +60,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		seq.Append(gameObject.transform.DORotate(new Vector3(0, 0, 180), .5f).SetEase(Ease.InOutBack));
 		seq.Append(gameObject.transform.DOMove(DeckManager.Instance.Deck.position, .7f).OnComplete(() =>
 		{
-			SetValues(DeckManager.Instance.ReplaceCard(_card));
+			SetValues(DeckManager.Instance.ReplaceCard(Model));
 			_outline.enabled = false;
 		}));
 		seq.AppendInterval(.1f);
@@ -83,7 +83,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	{
 		if (Vector3.Distance(gameObject.transform.position, _initialPos) < 0.1)
 		{
-			_outline.enabled = highlighted || _card.IsSelected;
+			_outline.enabled = highlighted || Model.IsSelected;
 
 			if (highlighted)
 			{
@@ -100,10 +100,10 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	{
 		var selectedCards = DeckManager.Instance.DealtCards.Where(x => x.IsSelected).ToList();
 
-		_card.IsSelected = !_card.IsSelected && selectedCards.Count < 3;
-		_outline.enabled = _card.IsSelected;
+		Model.IsSelected = !Model.IsSelected && selectedCards.Count < 3;
+		_outline.enabled = Model.IsSelected;
 
-		if (_card.IsSelected)
+		if (Model.IsSelected)
 		{
 			MoveUp();
 		}
