@@ -1,11 +1,8 @@
 ﻿using Assets.Game.Scripts.Support;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using UnityEngine;
-using DG.Tweening;
 
 public class DeckManager
 {
@@ -22,9 +19,10 @@ public class DeckManager
 			return instance;
 		}
 	}
+
 	public List<CardModel> Cards { get; set; }
 	public List<CardModel> DealtCards { get; set; }
-	public GameObject Deck { get; set; }
+	public Transform Deck { get; set; }
 	private System.Random Random { get; set; }
 
 	private DeckManager()
@@ -36,7 +34,7 @@ public class DeckManager
 		Cards = new List<CardModel>();
 		DealtCards = new List<CardModel>();
 		Random = new System.Random();
-		Deck = GameObject.Find("Deck");
+		Deck = GameObject.Find("DeckLocator").transform;
 
 		Globals.CardPrefab = Resources.Load(ConfigValues.CardPrefab) as GameObject;
 		Globals.CardTextures = Resources.LoadAll<Texture2D>(ConfigValues.FrontFaceTextures);

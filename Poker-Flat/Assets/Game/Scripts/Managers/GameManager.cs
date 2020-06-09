@@ -1,6 +1,4 @@
-﻿using DG.Tweening;
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,7 +7,7 @@ public class GameManager : MonoBehaviour
 	public GameObject _cardLocators;
 	public GameObject _world;
 
-	public List<CardController> Cards;
+	public List<CardController> Cards { get; set; }
 
 	private void Awake()
 	{
@@ -20,6 +18,7 @@ public class GameManager : MonoBehaviour
 	{
 		DeckManager.Instance.Init();
 		DeckManager.Instance.GetCards(5);
+		Cards = new List<CardController>();
 		InstantiateCards();
 	}
 
@@ -34,13 +33,12 @@ public class GameManager : MonoBehaviour
 				var card = deck.DealtCards[i];
 				var cardGo = Instantiate(Globals.CardPrefab);
 				cardGo.transform.SetParent(_world.transform);
-				Vector3 deckPos = DeckManager.Instance.Deck.transform.position;
-				cardGo.transform.position = deckPos;
+				cardGo.transform.position = DeckManager.Instance.Deck.position;
 				CardController controller = cardGo.GetComponent<CardController>();
 				Cards.Add(controller);
 				controller.SetValues(card);
 				controller._initialPos = _cardLocators.transform.GetChild(i).position;
-				controller.MoveTo(controller._initialPos, 1.5f);
+				controller.MoveTo(controller._initialPos, 0.7f);
 			}
 		}
 	}
