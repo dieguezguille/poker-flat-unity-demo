@@ -70,10 +70,10 @@ public class GameManager : MonoBehaviour
 			card.GetComponent<CardController>().Replace();
 		}
 
+		CheckScore(); // fail
+
 		_changeCardsButton.interactable = false;
 		_tryAgainButton.gameObject.SetActive(true);
-
-		CheckScore(); // OK
 	}
 
 	public void CheckScore()
@@ -93,5 +93,7 @@ public class GameManager : MonoBehaviour
 		_tryAgainButton.gameObject.SetActive(false);
 		_changeCardsButton.interactable = true;
 		_scoreText.gameObject.SetActive(false);
+
+		CheckScore();
 	}
 }
