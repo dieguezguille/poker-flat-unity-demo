@@ -56,11 +56,13 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
-		CheckScore();
+		CheckScore(); // OK
 	}
 
 	public void ChangeCards()
 	{
+		_scoreText.gameObject.SetActive(false);
+
 		List<GameObject> selectedCards = Cards.FindAll(card => card.GetComponent<CardController>().Model.IsSelected);
 
 		foreach (var card in selectedCards)
@@ -71,7 +73,7 @@ public class GameManager : MonoBehaviour
 		_changeCardsButton.interactable = false;
 		_tryAgainButton.gameObject.SetActive(true);
 
-		CheckScore();
+		CheckScore(); // OK
 	}
 
 	public void CheckScore()
@@ -85,10 +87,8 @@ public class GameManager : MonoBehaviour
 	{
 		foreach (var card in Cards)
 		{
-			card.GetComponent<CardController>().Model.IsSelected = true;
+			card.GetComponent<CardController>().Replace();
 		}
-
-		ChangeCards();
 
 		_tryAgainButton.gameObject.SetActive(false);
 		_changeCardsButton.interactable = true;
