@@ -55,12 +55,14 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 	public void Replace()
 	{
+		var card = DeckManager.Instance.ReplaceCard(Model);
+
 		Sequence seq = DOTween.Sequence();
 		seq.Append(gameObject.transform.DOMove(new Vector3(_initialPos.x, _initialPos.y + .1f, _initialPos.z), .2f));
 		seq.Append(gameObject.transform.DORotate(new Vector3(0, 0, 180), .5f).SetEase(Ease.InOutBack));
 		seq.Append(gameObject.transform.DOMove(DeckManager.Instance.Deck.position, .7f).OnComplete(() =>
 		{
-			SetValues(DeckManager.Instance.ReplaceCard(Model));
+			SetValues(card);
 			_outline.enabled = false;
 		}));
 		seq.AppendInterval(.1f);

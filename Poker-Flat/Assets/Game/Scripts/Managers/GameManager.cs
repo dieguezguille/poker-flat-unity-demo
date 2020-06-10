@@ -56,31 +56,26 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
-		CheckScore(); // OK
+		CheckScore();
 	}
 
 	public void ChangeCards()
 	{
-		_scoreText.gameObject.SetActive(false);
-
 		List<GameObject> selectedCards = Cards.FindAll(card => card.GetComponent<CardController>().Model.IsSelected);
 
-		foreach (var card in selectedCards)
+		if (selectedCards.Count > 0)
 		{
-			card.GetComponent<CardController>().Replace();
+			foreach (var card in selectedCards)
+			{
+				card.GetComponent<CardController>().Replace();
+			}
+
+			_scoreText.gameObject.SetActive(false);
+			_changeCardsButton.interactable = false;
+			_tryAgainButton.gameObject.SetActive(true);
+
+			CheckScore();
 		}
-
-		CheckScore(); // fail
-
-		_changeCardsButton.interactable = false;
-		_tryAgainButton.gameObject.SetActive(true);
-	}
-
-	public void CheckScore()
-	{
-		HandType hand = ScoreManager.Instance.CheckScore();
-		_scoreText.gameObject.SetActive(true);
-		_scoreText.text = $"{hand}: {(int)hand} points!";
 	}
 
 	public void Restart()
@@ -95,5 +90,12 @@ public class GameManager : MonoBehaviour
 		_scoreText.gameObject.SetActive(false);
 
 		CheckScore();
+	}
+
+	public void CheckScore()
+	{
+		HandType hand = ScoreManager.Instance.CheckScore();
+		_scoreText.gameObject.SetActive(true);
+		_scoreText.text = $"{hand}: {(int)hand} points!";
 	}
 }

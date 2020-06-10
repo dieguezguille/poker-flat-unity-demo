@@ -52,21 +52,21 @@ namespace Assets.Game.Scripts.Managers
 			}
 
 			// check for three of a kind
-			if (repeatingCardsByRank.Any(card => card.Count == 3))
+			if (repeatingCardsByRank.Any(repeatingCard => repeatingCard.Count == 3))
 			{
 				return HandType.ThreeOfAKind;
 			}
 
 			// check for two pairs
-			if (repeatingCardsByRank.Any(card => card.Count == 2))
-			{
-				var twoPairs = repeatingCardsByRank.FindAll(rank => rank.Count > 1);
+			var pairs = repeatingCardsByRank.FindAll(card => card.Count == 2);
 
-				if (twoPairs.Count > 1)
+			if (pairs.Count > 0)
+			{
+				if (pairs.Count == 2)
 				{
 					return HandType.TwoPair;
 				}
-				else if (twoPairs.Count == 1)
+				else if (pairs.Count == 1)
 				{
 					return HandType.Pair;
 				}
