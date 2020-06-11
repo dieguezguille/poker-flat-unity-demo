@@ -23,10 +23,13 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	[SerializeField]
 	private MeshRenderer _backFaceRenderer;
 
+	private AudioSource _audioSource;
+
 	private void Awake()
 	{
 		_outline = GetComponent<Outline>();
 		_collider = GetComponent<BoxCollider>();
+		_audioSource = GetComponent<AudioSource>();
 	}
 
 	public void OnPointerEnter(PointerEventData eventData)
@@ -117,6 +120,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 	private void MoveUp()
 	{
+		_audioSource.Play();
 		gameObject.transform.DOMove(new Vector3(_initialPos.x, _initialPos.y + .1f, _initialPos.z), .2f);
 	}
 
