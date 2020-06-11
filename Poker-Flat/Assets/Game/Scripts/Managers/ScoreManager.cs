@@ -1,6 +1,4 @@
 ﻿using Assets.Game.Scripts.Enums;
-
-using System.Diagnostics;
 using System.Linq;
 
 namespace Assets.Game.Scripts.Managers
@@ -29,10 +27,10 @@ namespace Assets.Game.Scripts.Managers
 		{
 			var cards = DeckManager.Instance.DealtCards;
 
-			foreach (var card in cards)
-			{
-				UnityEngine.Debug.Log($"{card.Rank} - {card.Suit}");
-			}
+			//foreach (var card in cards)
+			//{
+			//	UnityEngine.Debug.Log($"{card.Rank} - {card.Suit}");
+			//}
 
 			// check for poker
 			var repeatingCardsByRank = cards

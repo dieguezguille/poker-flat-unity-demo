@@ -66,23 +66,21 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		seq.Append(gameObject.transform.DOMove(new Vector3(_initialPos.x, _initialPos.y + .1f, _initialPos.z), .2f));
 		seq.Append(gameObject.transform.DORotate(new Vector3(0, 0, 180), .5f).SetEase(Ease.InOutBack));
 		seq.Append(gameObject.transform.DOMove(DeckManager.Instance.Deck.position, .7f)
-		.OnStart(() =>
-		{
-			_whooshSound.Play();
-		})
-		.OnComplete(() =>
-		{
-			SetValues(card);
-			_outline.enabled = false;
-		}));
-
+			.OnStart(() =>
+			{
+				_whooshSound.Play();
+			})
+			.OnComplete(() =>
+			{
+				SetValues(card);_outline.enabled = false;
+			}));
 		seq.AppendInterval(.1f);
 		seq.Append(gameObject.transform.DOMove(new Vector3(_initialPos.x, _initialPos.y + .1f, _initialPos.z), .7f));
 		seq.Append(gameObject.transform.DORotate(new Vector3(0, 0, 0), .5f).SetEase(Ease.InOutBack)
-		.OnStart(() =>
-		{
+			.OnStart(() =>
+			{
 			_whooshSound.Play();
-		}));
+			}));
 		seq.Append(gameObject.transform.DOMove(_initialPos, .2f));
 	}
 
