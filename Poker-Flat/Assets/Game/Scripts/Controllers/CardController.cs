@@ -76,6 +76,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 	public void MoveTo(Vector3 position, float duration = .2f)
 	{
+		_audioSource.Play();
 		gameObject.transform.DOMove(position, duration);
 	}
 

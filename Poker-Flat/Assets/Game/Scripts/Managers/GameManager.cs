@@ -1,5 +1,7 @@
 ﻿using Assets.Game.Scripts.Enums;
 using Assets.Game.Scripts.Managers;
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,10 +33,19 @@ public class GameManager : MonoBehaviour
 		_tryAgainButton.gameObject.SetActive(false);
 		_scoreText.gameObject.SetActive(false);
 
-		InstantiateCards();
+		StartCoroutine(InstantiateCardsCoroutine());
+	}
+	public void ChangeCards()
+	{
+		StartCoroutine(ChangeCardsCoroutine());
 	}
 
-	public void InstantiateCards()
+	public void Restart()
+	{
+		StartCoroutine(RestartCoroutine());
+	}
+
+	IEnumerator InstantiateCardsCoroutine()
 	{
 		var deck = DeckManager.Instance;
 
@@ -53,13 +64,15 @@ public class GameManager : MonoBehaviour
 				controller.MoveTo(controller._initialPos, 0.7f);
 
 				Cards.Add(cardGo);
+				yield return null;
 			}
 		}
 
+		yield return new WaitForSeconds(3f);
 		CheckScore();
 	}
 
-	public void ChangeCards()
+	IEnumerator ChangeCardsCoroutine()
 	{
 		List<GameObject> selectedCards = Cards.FindAll(card => card.GetComponent<CardController>().Model.IsSelected);
 
@@ -68,31 +81,35 @@ public class GameManager : MonoBehaviour
 			foreach (var card in selectedCards)
 			{
 				card.GetComponent<CardController>().Replace();
+				yield return null;
 			}
 
 			_scoreText.gameObject.SetActive(false);
 			_changeCardsButton.interactable = false;
 			_tryAgainButton.gameObject.SetActive(true);
 
+			yield return new WaitForSeconds(3f);
 			CheckScore();
 		}
 	}
 
-	public void Restart()
+	IEnumerator RestartCoroutine()
 	{
 		foreach (var card in Cards)
 		{
 			card.GetComponent<CardController>().Replace();
+			yield return null;
 		}
 
 		_tryAgainButton.gameObject.SetActive(false);
 		_changeCardsButton.interactable = true;
 		_scoreText.gameObject.SetActive(false);
 
+		yield return new WaitForSeconds(3f);
 		CheckScore();
 	}
 
-	public void CheckScore()
+	private void CheckScore()
 	{
 		HandType hand = ScoreManager.Instance.CheckScore();
 		_scoreText.gameObject.SetActive(true);
