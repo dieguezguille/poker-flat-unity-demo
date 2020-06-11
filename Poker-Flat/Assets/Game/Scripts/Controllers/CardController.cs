@@ -23,13 +23,15 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	[SerializeField]
 	private MeshRenderer _backFaceRenderer;
 
-	private AudioSource _audioSource;
+	[SerializeField]
+	private AudioSource _clickSound;
+	[SerializeField]
+	private AudioSource _whooshSound;
 
 	private void Awake()
 	{
 		_outline = GetComponent<Outline>();
 		_collider = GetComponent<BoxCollider>();
-		_audioSource = GetComponent<AudioSource>();
 	}
 
 	public void OnPointerEnter(PointerEventData eventData)
@@ -63,20 +65,30 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 		Sequence seq = DOTween.Sequence();
 		seq.Append(gameObject.transform.DOMove(new Vector3(_initialPos.x, _initialPos.y + .1f, _initialPos.z), .2f));
 		seq.Append(gameObject.transform.DORotate(new Vector3(0, 0, 180), .5f).SetEase(Ease.InOutBack));
-		seq.Append(gameObject.transform.DOMove(DeckManager.Instance.Deck.position, .7f).OnComplete(() =>
+		seq.Append(gameObject.transform.DOMove(DeckManager.Instance.Deck.position, .7f)
+		.OnStart(() =>
+		{
+			_whooshSound.Play();
+		})
+		.OnComplete(() =>
 		{
 			SetValues(card);
 			_outline.enabled = false;
 		}));
+
 		seq.AppendInterval(.1f);
 		seq.Append(gameObject.transform.DOMove(new Vector3(_initialPos.x, _initialPos.y + .1f, _initialPos.z), .7f));
-		seq.Append(gameObject.transform.DORotate(new Vector3(0, 0, 0), .5f).SetEase(Ease.InOutBack));
+		seq.Append(gameObject.transform.DORotate(new Vector3(0, 0, 0), .5f).SetEase(Ease.InOutBack)
+		.OnStart(() =>
+		{
+			_whooshSound.Play();
+		}));
 		seq.Append(gameObject.transform.DOMove(_initialPos, .2f));
 	}
 
 	public void MoveTo(Vector3 position, float duration = .2f)
 	{
-		_audioSource.Play();
+		_clickSound.Play();
 		gameObject.transform.DOMove(position, duration);
 	}
 
@@ -121,7 +133,7 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 	private void MoveUp()
 	{
-		_audioSource.Play();
+		_clickSound.Play();
 		gameObject.transform.DOMove(new Vector3(_initialPos.x, _initialPos.y + .1f, _initialPos.z), .2f);
 	}
 
