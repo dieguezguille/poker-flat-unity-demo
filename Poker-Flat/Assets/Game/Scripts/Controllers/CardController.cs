@@ -18,15 +18,10 @@ public class CardController : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 	[HideInInspector]
 	public Vector3 _initialPos;
 
-	[SerializeField]
-	private MeshRenderer _frontFaceRenderer;
-	[SerializeField]
-	private MeshRenderer _backFaceRenderer;
-
-	[SerializeField]
-	private AudioSource _clickSound;
-	[SerializeField]
-	private AudioSource _whooshSound;
+	public MeshRenderer _frontFaceRenderer;
+	public MeshRenderer _backFaceRenderer;
+	public AudioSource _clickSound;
+	public AudioSource _whooshSound;
 
 	private void Awake()
 	{
