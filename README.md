@@ -1,2 +1,2 @@
-# poker-flat
-Simple Poker game implementation in Unity. Just for demo purposes.
+# Poker Flat
+Simplified Poker game implementation made in Unity. Just for learning purposes.
